@@ -27,9 +27,9 @@ func Load() Config {
 		ClerkJWKSURL: getEnv("CLERK_JWKS_URL", ""),
 		ClerkIssuer:  getEnv("CLERK_ISSUER", ""),
 		Routes: []Route{
-			{PathPrefix: "/api/v1/", TargetURL: getEnv("EXPRESS_BACKEND_URL", "")},
-			{PathPrefix: "/api/v1/", TargetURL: getEnv("ORCHESTRATOR_URL", "")},
-			{PathPrefix: "/", TargetURL: getEnv("AGENT_API_URL", "")},
+			{PathPrefix: "/api/v1/express/", TargetURL: getEnv("EXPRESS_BACKEND_URL", "")},
+			{PathPrefix: "/api/v1/orchestrator/", TargetURL: getEnv("ORCHESTRATOR_URL", "")},
+			{PathPrefix: "/api/v1/agent/", TargetURL: getEnv("AGENT_API_URL", "")},
 		},
 	}
 }
