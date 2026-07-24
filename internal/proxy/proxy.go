@@ -21,6 +21,7 @@ func NewReverseProxy(routes []config.Route) http.Handler {
 		}
 
 		proxy := httputil.NewSingleHostReverseProxy(target)
+		proxy.FlushInterval = -1 // Flush immediately for SSE streams
 
 		// Customize the Director to modify request before forwarding
 		originalDirector := proxy.Director
@@ -45,7 +46,7 @@ func NewReverseProxy(routes []config.Route) http.Handler {
 			path += "/"
 		}
 		
-		mux.Handle(path, http.StripPrefix(route.PathPrefix, proxy))
+		mux.Handle(path, proxy)
 		
 		// Also handle exact match without trailing slash
 		if !strings.HasSuffix(route.PathPrefix, "/") {

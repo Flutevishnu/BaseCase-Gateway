@@ -27,9 +27,17 @@ func Load() Config {
 		ClerkJWKSURL: getEnv("CLERK_JWKS_URL", ""),
 		ClerkIssuer:  getEnv("CLERK_ISSUER", ""),
 		Routes: []Route{
-			{PathPrefix: "/api/v1/express/", TargetURL: getEnv("EXPRESS_BACKEND_URL", "")},
-			{PathPrefix: "/api/v1/orchestrator/", TargetURL: getEnv("ORCHESTRATOR_URL", "")},
-			{PathPrefix: "/api/v1/agent/", TargetURL: getEnv("AGENT_API_URL", "")},
+			// Express Backend (Core Data & Webhooks)
+			{PathPrefix: "/api/v1/problems", TargetURL: getEnv("EXPRESS_BACKEND_URL", "")},
+			{PathPrefix: "/api/v1/user", TargetURL: getEnv("EXPRESS_BACKEND_URL", "")},
+			{PathPrefix: "/api/webhooks", TargetURL: getEnv("EXPRESS_BACKEND_URL", "")},
+
+			// Go Orchestrator (Workflows)
+			{PathPrefix: "/api/v1/evaluations", TargetURL: getEnv("ORCHESTRATOR_URL", "")},
+			{PathPrefix: "/api/v1/sessions", TargetURL: getEnv("ORCHESTRATOR_URL", "")},
+
+			// LangGraph Agent (AI & Streaming)
+			{PathPrefix: "/api/v1/mentor", TargetURL: getEnv("AGENT_API_URL", "")},
 		},
 	}
 }
