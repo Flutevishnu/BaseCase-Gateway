@@ -16,6 +16,19 @@ func (rw *responseRecorder) WriteHeader(code int) {
 	rw.ResponseWriter.WriteHeader(code)
 }
 
+// Flush passes flushes through to the real writer. Without it the reverse proxy's
+// FlushInterval = -1 has no effect and SSE responses are buffered until they end.
+func (rw *responseRecorder) Flush() {
+	if f, ok := rw.ResponseWriter.(http.Flusher); ok {
+		f.Flush()
+	}
+}
+
+// Unwrap lets http.ResponseController reach the underlying ResponseWriter.
+func (rw *responseRecorder) Unwrap() http.ResponseWriter {
+	return rw.ResponseWriter
+}
+
 func Logger(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
